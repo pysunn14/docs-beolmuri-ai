@@ -8,7 +8,11 @@ export default defineConfig({
 	base: '/docs-beolmuri-ai',
 	integrations: [
 		starlight({
-			title: '별무리 AI 문서',
+			title: '별무리 AI',
+			logo: { src: './src/assets/star.svg', alt: '' },
+			locales: { root: { label: '한국어', lang: 'ko' } },
+			customCss: ['./src/styles/theme.css'],
+			credits: false,
 		}),
 	],
 });
