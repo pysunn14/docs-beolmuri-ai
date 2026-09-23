@@ -10,32 +10,39 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const docs = [
-  { id: 'overview', group: '시작', title: '문서 개요' },
-  { id: 'system-map', group: '시작', title: 'System Map' },
-  { id: 'reading', group: '시작', title: '문서 읽기 안내' },
-  { id: 'model-stack', group: '설계', title: 'Model Stack' },
-  { id: 'model-readiness', group: '설계', title: 'Model Readiness' },
-  { id: 'response-construction', group: '설계', title: 'Response Construction' },
-  { id: 'scene-routing', group: '설계', title: 'Scene Routing' },
-  { id: 'memory', group: '설계', title: 'Memory' },
-  { id: 'memory-save', group: '설계', title: 'What gets saved' },
-  { id: 'memory-retrieval', group: '설계', title: 'How memories are retrieved' },
-  { id: 'request-routing', group: '설계', title: 'Request Routing' },
-  { id: 'proposal-execution', group: '설계', title: 'Proposal and Execution' },
-  { id: 'validation-boundaries', group: '설계', title: 'Validation Boundaries' },
-  { id: 'architecture', group: '설계', title: 'Architecture' },
-  { id: 'data', group: '설계', title: '데이터와 전처리' },
-  { id: 'runtime', group: '설계', title: '추론 환경' },
-  { id: 'criteria', group: '평가', title: '평가 기준' },
-  { id: 'evaluating-consistency', group: '평가', title: 'Evaluating Consistency' },
-  { id: 'context-and-latency', group: '평가', title: 'Context and Latency' },
-  { id: 'evaluation-boundaries', group: '평가', title: 'Evaluation Boundaries' },
-  { id: 'measurements', group: '평가', title: '측정 기록' },
-  { id: 'changes', group: '기록', title: '변경 기록' },
-  { id: 'glossary', group: '기록', title: '용어집' }
+  { id: 'overview', group: 'Overview', title: 'Overview' },
+  { id: 'architecture', group: 'Overview', title: 'Architecture' },
+  { id: 'overview-system-map', group: 'Overview', title: 'System Map' },
+  { id: 'models-model-stack', group: 'Models', title: 'Model Stack' },
+  { id: 'models-model-readiness', group: 'Models', title: 'Model Readiness' },
+  { id: 'dialogue-response-construction', group: 'Dialogue', title: 'Response Construction' },
+  { id: 'dialogue-scene-routing', group: 'Dialogue', title: 'Scene Routing' },
+  { id: 'dialogue-evaluating-consistency', group: 'Dialogue', title: 'Evaluating Consistency' },
+  { id: 'memory-memory', group: 'Memory', title: 'Memory' },
+  { id: 'memory-save', group: 'Memory', title: 'What gets saved' },
+  { id: 'memory-retrieval', group: 'Memory', title: 'How memories are retrieved' },
+  { id: 'tool-use-request-routing', group: 'Tool Use', title: 'Request Routing' },
+  { id: 'tool-use-proposal-execution', group: 'Tool Use', title: 'Proposal and Execution' },
+  { id: 'guardrails-validation-boundaries', group: 'Guardrails', title: 'Validation Boundaries' },
+  { id: 'optimization-context-and-latency', group: 'Optimization', title: 'Context and Latency' },
+  { id: 'optimization-evaluation-boundaries', group: 'Optimization', title: 'Evaluation Boundaries' }
 ];
 
-const groups = ['시작', '설계', '평가', '기록'];
+const groups = ['Overview', 'Models', 'Dialogue', 'Memory', 'Tool Use', 'Guardrails', 'Optimization'];
+const legacyDocIds = {
+  'system-map': 'overview-system-map',
+  'model-stack': 'models-model-stack',
+  'model-readiness': 'models-model-readiness',
+  'response-construction': 'dialogue-response-construction',
+  'scene-routing': 'dialogue-scene-routing',
+  'evaluating-consistency': 'dialogue-evaluating-consistency',
+  memory: 'memory-memory',
+  'request-routing': 'tool-use-request-routing',
+  'proposal-execution': 'tool-use-proposal-execution',
+  'validation-boundaries': 'guardrails-validation-boundaries',
+  'context-and-latency': 'optimization-context-and-latency',
+  'evaluation-boundaries': 'optimization-evaluation-boundaries'
+};
 
 function StarMark() {
   return (
@@ -84,7 +91,8 @@ function App({ documents }) {
 
   React.useEffect(() => {
     function syncFromUrl() {
-      const id = new URLSearchParams(window.location.search).get('doc');
+      const requestedId = new URLSearchParams(window.location.search).get('doc');
+      const id = legacyDocIds[requestedId] || requestedId;
       setDocId(docs.some(item => item.id === id) ? id : 'overview');
     }
     syncFromUrl();
@@ -179,7 +187,7 @@ function App({ documents }) {
       <div className="workspace">
         <aside id="mobile-doc-menu" className={`left-rail ${mobileMenu ? 'is-open' : ''}`} aria-label="문서 메뉴">
           <div className="rail-inner">
-            <div className="rail-heading">문서 탐색 <span>01 — 04</span></div>
+            <div className="rail-heading">문서 탐색 <span>01 — 07</span></div>
             {groups.map((group, index) => <div className="nav-group" key={group}>
               <div className="group-label"><span className="group-index">0{index + 1}</span>{group}</div>
               <div className="nav-links">{docs.filter(item => item.group === group).map(item => <button key={item.id} onClick={() => openDoc(item.id)} className={docId === item.id ? 'active' : ''} aria-current={docId === item.id ? 'page' : undefined}>{item.title}{docId === item.id && <Chevron />}</button>)}</div>

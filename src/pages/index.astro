@@ -13,7 +13,7 @@ const documents = Object.fromEntries(await Promise.all(
 		['architecture', architecture],
 		['memory-save', memorySave],
 		['memory-retrieval', memoryRetrieval],
-		...Object.entries(technicalSeries).map(([path, source]) => [path.split('/').at(-1).replace(/\.md$/, '').toLowerCase(), source]),
+		...Object.entries(technicalSeries).map(([path, source]) => [path.split('/').slice(-2).join('-').replace(/\.md$/, '').toLowerCase(), source]),
 	].map(async ([id, source]) => [id, {
 		title: source.frontmatter.title,
 		description: source.frontmatter.description,
