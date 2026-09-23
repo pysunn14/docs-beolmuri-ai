@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://pysunn14.github.io',
+	site: 'https://pysunn.me',
 	base: '/docs-beolmuri-ai',
 	integrations: [
 		starlight({

@@ -9,4 +9,5 @@ npm run build
 npm run preview
 ```
 
-GitHub Pages는 `main`에 반영된 버전을 배포한다. 별도 도메인은 설정하지 않았다.
+GitHub Pages는 `main`에 반영된 버전을 기존 개인 도메인의
+`https://pysunn.me/docs-beolmuri-ai/`에 배포한다.
