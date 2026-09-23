@@ -6,12 +6,14 @@ import * as memoryRetrieval from '../content/docs/memory/how-memories-are-retrie
 import * as architecture from '../content/docs/architecture/Architecture.md';
 import 'katex/dist/katex.min.css';
 
+const technicalSeries = import.meta.glob('../content/docs/technical-series/**/*.md', { eager: true });
 const documents = Object.fromEntries(await Promise.all(
 	[
 		['overview', overview],
 		['architecture', architecture],
 		['memory-save', memorySave],
 		['memory-retrieval', memoryRetrieval],
+		...Object.entries(technicalSeries).map(([path, source]) => [path.split('/').at(-1).replace(/\.md$/, '').toLowerCase(), source]),
 	].map(async ([id, source]) => [id, {
 		title: source.frontmatter.title,
 		description: source.frontmatter.description,
