@@ -1,4 +1,5 @@
 import React from 'react';
+import MarkdownContent from './MarkdownContent.jsx';
 
 const TWEAK_SCHEMA = /*TWEAK-SCHEMA-BEGIN*/{
   "accentColor": { "kind": "color" },
@@ -14,7 +15,7 @@ const docs = [
   { id: 'reading', group: '시작', title: '문서 읽기 안내', description: '문서의 구성과 표기 방식을 안내하는 자리입니다.' },
   { id: 'memory-save', group: '설계', title: 'What gets saved', description: '대화에서 기억할 발화를 고르는 방법을 설명합니다.' },
   { id: 'memory-retrieval', group: '설계', title: 'How memories are retrieved', description: '저장된 발화를 다시 찾는 방법을 설명합니다.' },
-  { id: 'architecture', group: '설계', title: '모델 설계', description: '모델 설계의 배경과 선택 기준을 정리할 자리입니다.' },
+  { id: 'architecture', group: '설계', title: 'Architecture', description: 'PetAI의 온디바이스 AI 런타임과 Unity 브릿지 구조' },
   { id: 'data', group: '설계', title: '데이터와 전처리', description: '데이터와 전처리 과정을 설명할 자리입니다.' },
   { id: 'runtime', group: '설계', title: '추론 환경', description: '온디바이스 추론 환경을 기록할 자리입니다.' },
   { id: 'criteria', group: '평가', title: '평가 기준', description: '평가 항목과 조건을 명시할 자리입니다.' },
@@ -187,7 +188,7 @@ function App({ documents }) {
           </section>
           {markdownDoc ? <>
             {/* Astro compiles repository-owned Markdown before passing it to this component. */}
-            <div className="overview-content" dangerouslySetInnerHTML={{ __html: markdownDoc.html }} />
+            <MarkdownContent key={docId} html={markdownDoc.html} />
           </> : <>
             <section id="draft" className="content-section"><h2>작성 예정 내용</h2><p>{doc.description} 구체적인 방법, 조건, 근거는 확인 가능한 내용이 준비된 뒤 이 절에 추가됩니다.</p><div className="placeholder"><span className="placeholder-mark">✳</span><div><strong>내용을 준비하고 있습니다</strong><p>확인되지 않은 구현 내용이나 측정 수치는 이 시안에 포함하지 않습니다.</p></div></div></section>
             <section id="related" className="content-section last-section"><h2>관련 문서</h2><p>다른 주제는 왼쪽 문서 메뉴에서 살펴볼 수 있습니다.</p><button className="inline-link" onClick={() => openDoc('overview')}>문서 개요로 돌아가기 <span aria-hidden="true">↗</span></button></section>
@@ -291,6 +292,8 @@ function App({ documents }) {
           .overview-content th:first-child,.overview-content td:first-child { padding-left: 0; }
           .overview-content pre { overflow-x: auto; margin: 26px 0 0; padding: 24px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 13px; line-height: 1.9; }
           .overview-content pre code { font: inherit; }
+          .overview-content pre.mermaid { background: #171d26; text-align: center; line-height: normal; }
+          .overview-content pre.mermaid svg { display: block; margin: auto; min-width: 580px; }
           @media (max-width:720px) {
             .brand-sub { display: inline-flex; height: 21px; font-size: 10px; padding: 0 5px; }
             .brand { gap: 6px; }

@@ -3,10 +3,12 @@ import App from '../components/App.jsx';
 import * as overview from '../content/docs/index.md';
 import * as memorySave from '../content/docs/memory/what-gets-saved.md';
 import * as memoryRetrieval from '../content/docs/memory/how-memories-are-retrieved.md';
+import * as architecture from '../content/docs/architecture/Architecture.md';
 
 const documents = Object.fromEntries(await Promise.all(
 	[
 		['overview', overview],
+		['architecture', architecture],
 		['memory-save', memorySave],
 		['memory-retrieval', memoryRetrieval],
 	].map(async ([id, source]) => [id, {
