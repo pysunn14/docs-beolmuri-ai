@@ -12,6 +12,8 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 const docs = [
   { id: 'overview', group: '시작', title: '문서 개요', description: '별무리 AI 공개 기술 문서의 범위와 읽는 방법을 안내합니다.' },
   { id: 'reading', group: '시작', title: '문서 읽기 안내', description: '문서의 구성과 표기 방식을 안내하는 자리입니다.' },
+  { id: 'memory-save', group: '설계', title: 'What gets saved', description: '대화에서 기억할 발화를 고르는 방법을 설명합니다.' },
+  { id: 'memory-retrieval', group: '설계', title: 'How memories are retrieved', description: '저장된 발화를 다시 찾는 방법을 설명합니다.' },
   { id: 'architecture', group: '설계', title: '모델 설계', description: '모델 설계의 배경과 선택 기준을 정리할 자리입니다.' },
   { id: 'data', group: '설계', title: '데이터와 전처리', description: '데이터와 전처리 과정을 설명할 자리입니다.' },
   { id: 'runtime', group: '설계', title: '추론 환경', description: '온디바이스 추론 환경을 기록할 자리입니다.' },
@@ -50,7 +52,7 @@ function ThemeIcon({ light }) {
     : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20.4 15.7A8.8 8.8 0 0 1 8.3 3.6 8.8 8.8 0 1 0 20.4 15.7Z"/></svg>;
 }
 
-function App({ overviewTitle, overviewDescription, overviewHtml, overviewHeadings }) {
+function App({ documents }) {
   const [theme, setTheme] = React.useState('dark');
   const [docId, setDocId] = React.useState('overview');
   const [activeSection, setActiveSection] = React.useState('intro');
@@ -61,13 +63,28 @@ function App({ overviewTitle, overviewDescription, overviewHtml, overviewHeading
   const searchRef = React.useRef(null);
   const titleRef = React.useRef(null);
   const doc = docs.find(item => item.id === docId) || docs[0];
+  const markdownDoc = documents[docId];
   const matches = docs.filter(item => `${item.group} ${item.title}`.includes(query.trim()));
   const isOverview = docId === 'overview';
-  const sections = isOverview
-    ? [{ id: 'intro', label: 'Overview' }, ...overviewHeadings.map(item => ({ id: item.slug, label: item.text }))]
+  const sections = markdownDoc
+    ? [{ id: 'intro', label: isOverview ? 'Overview' : 'Introduction' }, ...markdownDoc.headings.map(item => ({ id: item.slug, label: item.text }))]
     : [{ id: 'intro', label: '개요' }, { id: 'draft', label: '작성 예정 내용' }, { id: 'related', label: '관련 문서' }];
 
+  React.useEffect(() => {
+    function syncFromUrl() {
+      const id = new URLSearchParams(window.location.search).get('doc');
+      setDocId(docs.some(item => item.id === id) ? id : 'overview');
+    }
+    syncFromUrl();
+    window.addEventListener('popstate', syncFromUrl);
+    return () => window.removeEventListener('popstate', syncFromUrl);
+  }, []);
+
   function openDoc(id) {
+    const url = new URL(window.location.href);
+    if (id === 'overview') url.searchParams.delete('doc');
+    else url.searchParams.set('doc', id);
+    window.history.pushState(null, '', url);
     setDocId(id);
     setActiveSection('intro');
     setSearchOpen(false);
@@ -164,13 +181,13 @@ function App({ overviewTitle, overviewDescription, overviewHtml, overviewHeading
           <div className="breadcrumb"><button onClick={() => openDoc(docs.find(item => item.group === doc.group).id)}>{doc.group}</button><Chevron /><span>{doc.title}</span></div>
           
           <section id="intro" className="intro-section">
-            <h1 ref={titleRef} tabIndex="-1">{isOverview ? overviewTitle : doc.title}</h1>
-            <p className="lead">{isOverview ? overviewDescription : doc.description}</p>
-            {!isOverview && <div className="draft-note" role="note"><span className="note-symbol" aria-hidden="true">i</span><div><strong>문서 작성 중</strong><p>아래 내용은 문서 구성 예시입니다. 구현 상태나 성능 결과는 포함하지 않았습니다.</p></div></div>}
+            <h1 ref={titleRef} tabIndex="-1">{markdownDoc?.title ?? doc.title}</h1>
+            <p className="lead">{markdownDoc?.description ?? doc.description}</p>
+            {!markdownDoc && <div className="draft-note" role="note"><span className="note-symbol" aria-hidden="true">i</span><div><strong>문서 작성 중</strong><p>아래 내용은 문서 구성 예시입니다. 구현 상태나 성능 결과는 포함하지 않았습니다.</p></div></div>}
           </section>
-          {isOverview ? <>
+          {markdownDoc ? <>
             {/* Astro compiles repository-owned Markdown before passing it to this component. */}
-            <div className="overview-content" dangerouslySetInnerHTML={{ __html: overviewHtml }} />
+            <div className="overview-content" dangerouslySetInnerHTML={{ __html: markdownDoc.html }} />
           </> : <>
             <section id="draft" className="content-section"><h2>작성 예정 내용</h2><p>{doc.description} 구체적인 방법, 조건, 근거는 확인 가능한 내용이 준비된 뒤 이 절에 추가됩니다.</p><div className="placeholder"><span className="placeholder-mark">✳</span><div><strong>내용을 준비하고 있습니다</strong><p>확인되지 않은 구현 내용이나 측정 수치는 이 시안에 포함하지 않습니다.</p></div></div></section>
             <section id="related" className="content-section last-section"><h2>관련 문서</h2><p>다른 주제는 왼쪽 문서 메뉴에서 살펴볼 수 있습니다.</p><button className="inline-link" onClick={() => openDoc('overview')}>문서 개요로 돌아가기 <span aria-hidden="true">↗</span></button></section>
@@ -268,6 +285,10 @@ function App({ overviewTitle, overviewDescription, overviewHtml, overviewHeading
           .overview-content h2 { scroll-margin-top: 160px; border-top: 1px solid var(--line); margin: 58px 0 16px; padding-top: 39px; font-size: 23px; line-height: 1.4; letter-spacing: -.045em; }
           .overview-content h3 { margin: 30px 0 8px; font-size: 16px; line-height: 1.5; }
           .overview-content p { max-width: 660px; margin: 0 0 18px; color: var(--secondary); font-size: 15px; line-height: 1.95; letter-spacing: -.018em; }
+          .overview-content table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 24px 0; color: var(--secondary); font-size: 13px; line-height: 1.7; }
+          .overview-content th,.overview-content td { border-bottom: 1px solid var(--line); padding: 10px 14px; text-align: left; vertical-align: top; }
+          .overview-content th { color: var(--text); font-weight: 650; }
+          .overview-content th:first-child,.overview-content td:first-child { padding-left: 0; }
           .overview-content pre { overflow-x: auto; margin: 26px 0 0; padding: 24px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 13px; line-height: 1.9; }
           .overview-content pre code { font: inherit; }
           @media (max-width:720px) {

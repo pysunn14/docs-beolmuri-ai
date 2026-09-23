@@ -1,9 +1,21 @@
 ---
 import App from '../components/App.jsx';
 import * as overview from '../content/docs/index.md';
+import * as memorySave from '../content/docs/memory/what-gets-saved.md';
+import * as memoryRetrieval from '../content/docs/memory/how-memories-are-retrieved.md';
 
-const overviewHtml = await overview.compiledContent();
-const overviewHeadings = (await overview.getHeadings()).filter((heading) => heading.depth === 2);
+const documents = Object.fromEntries(await Promise.all(
+	[
+		['overview', overview],
+		['memory-save', memorySave],
+		['memory-retrieval', memoryRetrieval],
+	].map(async ([id, source]) => [id, {
+		title: source.frontmatter.title,
+		description: source.frontmatter.description,
+		html: await source.compiledContent(),
+		headings: (await source.getHeadings()).filter((heading) => heading.depth === 2),
+	}])
+));
 ---
 
 <!doctype html>
@@ -11,16 +23,10 @@ const overviewHeadings = (await overview.getHeadings()).filter((heading) => head
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content={overview.frontmatter.description} />
+		<meta name="description" content={documents.overview.description} />
 		<title>별무리 AI 문서</title>
 	</head>
 	<body>
-		<App
-			client:load
-			overviewTitle={overview.frontmatter.title}
-			overviewDescription={overview.frontmatter.description}
-			overviewHtml={overviewHtml}
-			overviewHeadings={overviewHeadings}
-		/>
+		<App client:load documents={documents} />
 	</body>
 </html>
