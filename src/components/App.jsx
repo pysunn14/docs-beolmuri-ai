@@ -1,5 +1,4 @@
 import React from 'react';
-import MarkdownContent from './MarkdownContent.jsx';
 
 const TWEAK_SCHEMA = /*TWEAK-SCHEMA-BEGIN*/{
   "accentColor": { "kind": "color" },
@@ -188,7 +187,7 @@ function App({ documents }) {
           </section>
           {markdownDoc ? <>
             {/* Astro compiles repository-owned Markdown before passing it to this component. */}
-            <MarkdownContent key={docId} html={markdownDoc.html} />
+            <div className="overview-content" dangerouslySetInnerHTML={{ __html: markdownDoc.html }} />
           </> : <>
             <section id="draft" className="content-section"><h2>작성 예정 내용</h2><p>{doc.description} 구체적인 방법, 조건, 근거는 확인 가능한 내용이 준비된 뒤 이 절에 추가됩니다.</p><div className="placeholder"><span className="placeholder-mark">✳</span><div><strong>내용을 준비하고 있습니다</strong><p>확인되지 않은 구현 내용이나 측정 수치는 이 시안에 포함하지 않습니다.</p></div></div></section>
             <section id="related" className="content-section last-section"><h2>관련 문서</h2><p>다른 주제는 왼쪽 문서 메뉴에서 살펴볼 수 있습니다.</p><button className="inline-link" onClick={() => openDoc('overview')}>문서 개요로 돌아가기 <span aria-hidden="true">↗</span></button></section>
@@ -292,8 +291,7 @@ function App({ documents }) {
           .overview-content th:first-child,.overview-content td:first-child { padding-left: 0; }
           .overview-content pre { overflow-x: auto; margin: 26px 0 0; padding: 24px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 13px; line-height: 1.9; }
           .overview-content pre code { font: inherit; }
-          .overview-content pre.mermaid { background: #171d26; text-align: center; line-height: normal; }
-          .overview-content pre.mermaid svg { display: block; margin: auto; min-width: 580px; }
+          .overview-content > svg { display: block; width: 100%; height: auto; margin: 26px auto; padding: 16px; border: 1px solid var(--line); border-radius: 7px; background: #171d26; }
           @media (max-width:720px) {
             .brand-sub { display: inline-flex; height: 21px; font-size: 10px; padding: 0 5px; }
             .brand { gap: 6px; }
