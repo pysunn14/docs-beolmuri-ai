@@ -1,26 +1,28 @@
 ---
-title: 문서 홈
-description: 별무리의 온디바이스 언어 모델 기술 문서
-template: splash
-hero:
-  title: 별무리 AI
-  tagline: 온디바이스 언어 모델의 설계와 검증 기록을 준비하고 있습니다.
-  image:
-    html: |
-      <svg class="constellation" viewBox="0 0 480 420" fill="none" aria-hidden="true" focusable="false">
-        <circle class="orbit orbit-outer" cx="240" cy="210" r="165" />
-        <circle class="orbit orbit-inner" cx="240" cy="210" r="105" />
-        <path class="axis" d="M240 15v390M45 210h390" />
-        <path class="ray" d="m240 123 18 69 69 18-69 18-18 69-18-69-69-18 69-18 18-69Z" />
-        <circle class="node node-primary" cx="105" cy="115" r="5" />
-        <circle class="node" cx="384" cy="130" r="3" />
-        <circle class="node" cx="327" cy="350" r="4" />
-        <circle class="node" cx="71" cy="279" r="2" />
-        <path class="spark" d="M385 54v22m-11-11h22M107 341v16m-8-8h16" />
-      </svg>
+title: 별무리 AI 문서
+description: 별무리의 온디바이스 소형 언어 모델 기술 문서
 ---
 
-<div class="landing-status" aria-label="문서 상태: 준비 중">
-  <span class="landing-status__label">DOCUMENTATION</span>
-  <span class="landing-status__state"><span class="landing-status__dot" aria-hidden="true"></span>준비 중</span>
+
+온디바이스 소형 언어 모델의 설계와 검증을 기록하는 공개 기술 문서입니다.
+
+<div class="draft-note" role="note">
+  <strong>문서 작성 중</strong>
+  <p>현재 공개할 내용을 정리하고 있습니다. 아래 문장은 문서 구조를 안내하며, 구현 상태나 성능 결과를 나타내지 않습니다.</p>
 </div>
+
+## 다루는 내용
+
+설계와 평가의 조건, 선택 이유, 검증 결과를 공개 가능한 범위에서 정리할 예정입니다.
+
+- **설계** — 모델 구조와 데이터 처리, 추론 환경의 선택 기준
+- **평가** — 측정 조건, 평가 항목, 결과 해석 방법
+- **기록** — 변경 과정과 관찰 메모
+
+## 읽는 방법
+
+왼쪽 메뉴에서 주제를 찾고, 오른쪽 목차에서 현재 페이지의 절로 이동할 수 있습니다. 각 문서는 확인 가능한 근거가 준비된 뒤 채웁니다.
+
+## 공개 범위
+
+현재 메뉴와 문장은 문서 구조를 보여주는 자리표시입니다. 실제 구현 내용과 평가 결과는 아직 게시하지 않았습니다.

@@ -12,6 +12,13 @@ export default defineConfig({
 			logo: { src: './src/assets/star.svg', alt: '' },
 			locales: { root: { label: '한국어', lang: 'ko' } },
 			customCss: ['./src/styles/theme.css'],
+			components: { Header: './src/components/Header.astro' },
+			sidebar: [
+				{ label: '시작', items: [{ slug: '' }, { slug: 'start' }] },
+				{ label: '설계', items: [{ slug: 'design' }] },
+				{ label: '평가', items: [{ slug: 'evaluation' }] },
+				{ label: '기록', items: [{ slug: 'notes' }] },
+			],
 			credits: false,
 		}),
 	],
