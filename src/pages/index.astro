@@ -1,5 +1,9 @@
 ---
 import App from '../components/App.jsx';
+import * as overview from '../content/docs/index.md';
+
+const overviewHtml = await overview.compiledContent();
+const overviewHeadings = (await overview.getHeadings()).filter((heading) => heading.depth === 2);
 ---
 
 <!doctype html>
@@ -7,10 +11,16 @@ import App from '../components/App.jsx';
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content="별무리 AI 공개 기술 문서" />
+		<meta name="description" content={overview.frontmatter.description} />
 		<title>별무리 AI 문서</title>
 	</head>
 	<body>
-		<App client:load />
+		<App
+			client:load
+			overviewTitle={overview.frontmatter.title}
+			overviewDescription={overview.frontmatter.description}
+			overviewHtml={overviewHtml}
+			overviewHeadings={overviewHeadings}
+		/>
 	</body>
 </html>

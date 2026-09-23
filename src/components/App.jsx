@@ -50,7 +50,7 @@ function ThemeIcon({ light }) {
     : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20.4 15.7A8.8 8.8 0 0 1 8.3 3.6 8.8 8.8 0 1 0 20.4 15.7Z"/></svg>;
 }
 
-function App() {
+function App({ overviewTitle, overviewDescription, overviewHtml, overviewHeadings }) {
   const [theme, setTheme] = React.useState('dark');
   const [docId, setDocId] = React.useState('overview');
   const [activeSection, setActiveSection] = React.useState('intro');
@@ -64,7 +64,7 @@ function App() {
   const matches = docs.filter(item => `${item.group} ${item.title}`.includes(query.trim()));
   const isOverview = docId === 'overview';
   const sections = isOverview
-    ? [{ id: 'intro', label: '문서 소개' }, { id: 'scope', label: '다루는 내용' }, { id: 'reading-guide', label: '읽는 방법' }, { id: 'publication', label: '공개 범위' }]
+    ? [{ id: 'intro', label: 'Overview' }, ...overviewHeadings.map(item => ({ id: item.slug, label: item.text }))]
     : [{ id: 'intro', label: '개요' }, { id: 'draft', label: '작성 예정 내용' }, { id: 'related', label: '관련 문서' }];
 
   function openDoc(id) {
@@ -164,16 +164,13 @@ function App() {
           <div className="breadcrumb"><button onClick={() => openDoc(docs.find(item => item.group === doc.group).id)}>{doc.group}</button><Chevron /><span>{doc.title}</span></div>
           
           <section id="intro" className="intro-section">
-            <h1 ref={titleRef} tabIndex="-1">{isOverview ? '별무리 AI 문서' : doc.title}</h1>
-            <p className="lead">{isOverview ? '온디바이스 소형 언어 모델의 설계와 검증을 기록하는 공개 기술 문서입니다.' : doc.description}</p>
-            <div className="draft-note" role="note"><span className="note-symbol" aria-hidden="true">i</span><div><strong>문서 작성 중</strong><p>아래 내용은 문서 구성 예시입니다. 구현 상태나 성능 결과는 포함하지 않았습니다.</p></div></div>
+            <h1 ref={titleRef} tabIndex="-1">{isOverview ? overviewTitle : doc.title}</h1>
+            <p className="lead">{isOverview ? overviewDescription : doc.description}</p>
+            {!isOverview && <div className="draft-note" role="note"><span className="note-symbol" aria-hidden="true">i</span><div><strong>문서 작성 중</strong><p>아래 내용은 문서 구성 예시입니다. 구현 상태나 성능 결과는 포함하지 않았습니다.</p></div></div>}
           </section>
           {isOverview ? <>
-            <section id="scope" className="content-section"><h2>다루는 내용</h2><p>설계, 평가, 변경 기록을 나눠 정리합니다. 각 문서는 공개 가능한 근거와 조건이 준비되면 채웁니다.</p>
-              <div className="topic-list"><button onClick={() => openDoc('architecture')}><span>01</span><div><h3>설계</h3><p>모델 구조와 데이터 처리, 추론 환경에 대한 선택 기준을 정리할 자리입니다.</p></div><Chevron /></button><button onClick={() => openDoc('criteria')}><span>02</span><div><h3>평가</h3><p>평가 항목, 측정 조건, 결과 해석 방법을 구분해 기록할 자리입니다.</p></div><Chevron /></button><button onClick={() => openDoc('changes')}><span>03</span><div><h3>기록</h3><p>변경 내역과 관찰 메모를 시간 순서로 모을 자리입니다.</p></div><Chevron /></button></div>
-            </section>
-            <section id="reading-guide" className="content-section"><h2>읽는 방법</h2><p>왼쪽 메뉴에서 주제별 문서를 찾고, 오른쪽 목차에서 현재 페이지의 절로 이동할 수 있습니다. 각 문서는 공개 가능한 근거가 정리된 뒤 채워집니다.</p></section>
-            <section id="publication" className="content-section last-section"><h2>공개 범위</h2><p>이 시안의 문장과 메뉴는 문서 구조를 보여주기 위한 예시입니다. 실제 구현 내용, 평가 결과 및 수치는 포함하지 않았습니다.</p></section>
+            {/* Astro compiles repository-owned Markdown before passing it to this component. */}
+            <div className="overview-content" dangerouslySetInnerHTML={{ __html: overviewHtml }} />
           </> : <>
             <section id="draft" className="content-section"><h2>작성 예정 내용</h2><p>{doc.description} 구체적인 방법, 조건, 근거는 확인 가능한 내용이 준비된 뒤 이 절에 추가됩니다.</p><div className="placeholder"><span className="placeholder-mark">✳</span><div><strong>내용을 준비하고 있습니다</strong><p>확인되지 않은 구현 내용이나 측정 수치는 이 시안에 포함하지 않습니다.</p></div></div></section>
             <section id="related" className="content-section last-section"><h2>관련 문서</h2><p>다른 주제는 왼쪽 문서 메뉴에서 살펴볼 수 있습니다.</p><button className="inline-link" onClick={() => openDoc('overview')}>문서 개요로 돌아가기 <span aria-hidden="true">↗</span></button></section>
@@ -267,6 +264,12 @@ function App() {
           .topic-list p { color: var(--muted); }
           .placeholder { background: var(--surface); border-color: var(--line); }
           .article-footer button { color: var(--muted); }
+          .overview-content { padding-bottom: 70px; }
+          .overview-content h2 { scroll-margin-top: 160px; border-top: 1px solid var(--line); margin: 58px 0 16px; padding-top: 39px; font-size: 23px; line-height: 1.4; letter-spacing: -.045em; }
+          .overview-content h3 { margin: 30px 0 8px; font-size: 16px; line-height: 1.5; }
+          .overview-content p { max-width: 660px; margin: 0 0 18px; color: var(--secondary); font-size: 15px; line-height: 1.95; letter-spacing: -.018em; }
+          .overview-content pre { overflow-x: auto; margin: 26px 0 0; padding: 24px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 13px; line-height: 1.9; }
+          .overview-content pre code { font: inherit; }
           @media (max-width:720px) {
             .brand-sub { display: inline-flex; height: 21px; font-size: 10px; padding: 0 5px; }
             .brand { gap: 6px; }
@@ -280,6 +283,9 @@ function App() {
             .mobile-toc-links button { color: var(--secondary); }
             .mobile-toc-links button:hover { background: var(--surface-hover); }
             .intro-section h1 { margin-top: 42px; }
+            .overview-content h2 { margin-top: 44px; padding-top: 32px; font-size: 21px; }
+            .overview-content p { font-size: 14px; }
+            .overview-content pre { padding: 16px; font-size: 11px; }
             .document { padding-bottom: 115px; }
           }
           @media (prefers-reduced-motion:reduce) {
