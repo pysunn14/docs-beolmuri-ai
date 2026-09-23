@@ -12,6 +12,10 @@ export default defineConfig({
 			logo: { src: './src/assets/star.svg', alt: '' },
 			locales: { root: { label: '한국어', lang: 'ko' } },
 			customCss: ['./src/styles/theme.css'],
+			head: [{
+				tag: 'script',
+				content: "if (!localStorage.getItem('starlight-theme')) localStorage.setItem('starlight-theme', 'dark');",
+			}],
 			components: { Header: './src/components/Header.astro' },
 			sidebar: [
 				{ label: '시작', items: [{ slug: '' }, { slug: 'start' }] },
