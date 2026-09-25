@@ -22,8 +22,10 @@ const docs = [
   { id: 'memory-save', group: 'Memory', title: 'What gets saved' },
   { id: 'memory-retrieval', group: 'Memory', title: 'How memories are retrieved' },
   { id: 'tool-use-request-routing', group: 'Tool Use', title: 'Request Routing' },
+  { id: 'tool-use-classifier-evaluation', group: 'Tool Use', title: 'Classifier Evaluation' },
   { id: 'tool-use-proposal-execution', group: 'Tool Use', title: 'Proposal and Execution' },
   { id: 'guardrails-validation-boundaries', group: 'Guardrails', title: 'Validation Boundaries' },
+  { id: 'optimization-kv-cache', group: 'Optimization', title: 'KV Cache Reuse and Persistence' },
   { id: 'optimization-context-and-latency', group: 'Optimization', title: 'Context and Latency' },
   { id: 'optimization-evaluation-boundaries', group: 'Optimization', title: 'Evaluation Boundaries' }
 ];
@@ -294,6 +296,8 @@ function App({ documents }) {
           .topic-list p { color: var(--muted); }
           .article-footer button { color: var(--muted); }
           .overview-content { padding-bottom: 70px; }
+          .overview-content a { color: var(--accent); text-underline-offset: 3px; }
+          .overview-content a:hover { color: var(--text); }
           .overview-content h2 { scroll-margin-top: 160px; border-top: 1px solid var(--line); margin: 58px 0 16px; padding-top: 39px; font-size: 23px; line-height: 1.4; letter-spacing: -.045em; }
           .overview-content h3 { margin: 30px 0 8px; font-size: 16px; line-height: 1.5; }
           .overview-content p { max-width: 660px; margin: 0 0 18px; color: var(--secondary); font-size: 15px; line-height: 1.95; letter-spacing: -.018em; }
