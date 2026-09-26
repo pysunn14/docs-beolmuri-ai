@@ -21,6 +21,10 @@ description: 동적 입력의 접두부 재사용, CPU 추론 상태 전송, 체
 
 ## State Transfer
 
+네이티브 확장의 소스는 [LiteRT-LM 공개 포크의 고정 커밋](https://github.com/mornye-minor-gallery/LiteRT-LM/tree/939b09f5ac92974bb4a7df430d440c2b8780941e)에 있습니다. 원본 커밋 `a327b494`를 기준으로 CPU 상태 전송과 대기 토큰의 프리필 복구를 구현했으며, 원본의 기존 주석은 유지합니다. [수정 범위와 API 계약](https://github.com/mornye-minor-gallery/LiteRT-LM/blob/939b09f5ac92974bb4a7df430d440c2b8780941e/docs/PETAI_KV_CHECKPOINT.md)에서 변경한 파일과 검증 방법을 확인할 수 있습니다.
+
+공개 포크는 엔진의 상태 전송을 담당합니다. Swift 연결부와 `KVCheckpointStore`의 파일 저장 정책은 앱 저장소에서 관리합니다. 같은 공개 저장소의 `petai-ios-embedding-native-v1` 릴리스는 임베딩용 LiteRT·SentencePiece 프레임워크이며, KV 엔진과는 별개의 의존성입니다.
+
 `litert_lm_session_transfer_state`는 유휴 상태의 CPU 세션과 호출자 사이에서 추론 상태를 동기적으로 전달합니다. 네이티브 계층은 세션의 독점 사용과 작업 종료를 확인하고, Swift 파일 처리부가 버퍼를 읽거나 채우도록 콜백을 호출합니다.
 
 전송 대상은 KV 텐서, 처리 위치, 처리한 토큰 ID, 대기 토큰의 임베딩과 샘플러 상태입니다. 복원은 새 세션에서 수행하며, 다음 요청의 전체 입력을 제출하기 전에 끝납니다. 생성 중이던 답변을 중간부터 이어가는 용도로 사용하지 않습니다.
