@@ -1,0 +1,292 @@
+{
+  "date": "2026-09-29",
+  "model": "Gemma 4 E2B mobile quantization",
+  "model_sha256": "181938105e0eefd105961417e8da75903eacda102c4fce9ce90f50b97139a63c",
+  "runtime": "LiteRT-LM Python API 0.17.1",
+  "device": "M5 Pro Mac, macOS 26.5.1, AC power",
+  "conditions": {
+    "context_capacity_tokens": 4096,
+    "cpu_threads": 4,
+    "fixed_length_requested_prefill_tokens": 512,
+    "fixed_length_requested_decode_tokens": 256,
+    "dialogue_max_output_tokens": 256,
+    "dialogue_sampling": "temperature 0, top_k 1, seed 42, thinking off",
+    "processes": "fresh process for each condition and repeat",
+    "fixed_length_schedule": "one warmup per condition, then two measured repeats per condition",
+    "dialogue_schedule": "two repeats per condition, each with daily and long_freeform cases"
+  },
+  "calculation": {
+    "table_values": "median of two measured repeats for each condition and metric",
+    "peak_added_phys_footprint": "per-process peak phys_footprint minus baseline before model load; dialogue process-level metric",
+    "drafter_success_rate": "last MTP Drafter - Success rate field in each runtime log; dialogue value covers both cases in that trial",
+    "decode_token_count_caveat": "MTP-on fixed-length and CPU long_freeform trials reported 258 despite requesting at most 256 output tokens; this field is not used as a displayed-token count"
+  },
+  "fixed_length_trials": [
+    {
+      "backend": "cpu",
+      "mtp": false,
+      "repeat": 1,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 256,
+      "decode_tokens_per_second": 32.24182206041755,
+      "wall_seconds": 9.830299416091293,
+      "drafter_success_rate_reported": null
+    },
+    {
+      "backend": "cpu",
+      "mtp": true,
+      "repeat": 1,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 258,
+      "decode_tokens_per_second": 56.844201084500014,
+      "wall_seconds": 5.908646541880444,
+      "drafter_success_rate_reported": 0.945274
+    },
+    {
+      "backend": "gpu",
+      "mtp": false,
+      "repeat": 1,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 256,
+      "decode_tokens_per_second": 88.28250608860478,
+      "wall_seconds": 4.203624791931361,
+      "drafter_success_rate_reported": null
+    },
+    {
+      "backend": "gpu",
+      "mtp": true,
+      "repeat": 1,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 258,
+      "decode_tokens_per_second": 139.40886406417115,
+      "wall_seconds": 3.1999048748984933,
+      "drafter_success_rate_reported": 0.964646
+    },
+    {
+      "backend": "cpu",
+      "mtp": false,
+      "repeat": 2,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 256,
+      "decode_tokens_per_second": 31.18261261174981,
+      "wall_seconds": 10.187406166922301,
+      "drafter_success_rate_reported": null
+    },
+    {
+      "backend": "cpu",
+      "mtp": true,
+      "repeat": 2,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 258,
+      "decode_tokens_per_second": 58.08661507933593,
+      "wall_seconds": 5.774966582888737,
+      "drafter_success_rate_reported": 0.945274
+    },
+    {
+      "backend": "gpu",
+      "mtp": false,
+      "repeat": 2,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 256,
+      "decode_tokens_per_second": 120.73899101231449,
+      "wall_seconds": 2.751989958109334,
+      "drafter_success_rate_reported": null
+    },
+    {
+      "backend": "gpu",
+      "mtp": true,
+      "repeat": 2,
+      "prefill_token_count": 512,
+      "decode_token_count_reported": 258,
+      "decode_tokens_per_second": 254.70183411234993,
+      "wall_seconds": 1.699154624948278,
+      "drafter_success_rate_reported": 0.964646
+    }
+  ],
+  "dialogue_trials": [
+    {
+      "backend": "cpu",
+      "mtp": false,
+      "repeat": 1,
+      "peak_added_phys_footprint_bytes": 1040780288,
+      "drafter_success_rate_reported_for_both_cases": null,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 34,
+          "decode_tokens_per_second": 35.9463305299643,
+          "wall_seconds": 1.2333552080672234
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 256,
+          "decode_tokens_per_second": 40.15855045621374,
+          "wall_seconds": 6.613084292039275
+        }
+      ]
+    },
+    {
+      "backend": "cpu",
+      "mtp": true,
+      "repeat": 1,
+      "peak_added_phys_footprint_bytes": 1850412704,
+      "drafter_success_rate_reported_for_both_cases": 0.200364,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 33,
+          "decode_tokens_per_second": 24.28198894507267,
+          "wall_seconds": 1.6266796658746898
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 258,
+          "decode_tokens_per_second": 26.29643762643615,
+          "wall_seconds": 10.05885974992998
+        }
+      ]
+    },
+    {
+      "backend": "gpu",
+      "mtp": false,
+      "repeat": 1,
+      "peak_added_phys_footprint_bytes": 655558912,
+      "drafter_success_rate_reported_for_both_cases": null,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 20,
+          "decode_tokens_per_second": 75.57720903056048,
+          "wall_seconds": 0.3818680827971548
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 256,
+          "decode_tokens_per_second": 123.28884308383024,
+          "wall_seconds": 2.1151484169531614
+        }
+      ]
+    },
+    {
+      "backend": "gpu",
+      "mtp": true,
+      "repeat": 1,
+      "peak_added_phys_footprint_bytes": 808126816,
+      "drafter_success_rate_reported_for_both_cases": 0.235529,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 27,
+          "decode_tokens_per_second": 23.74375390434155,
+          "wall_seconds": 1.6053122081793845
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 256,
+          "decode_tokens_per_second": 120.55494594885563,
+          "wall_seconds": 2.167309958022088
+        }
+      ]
+    },
+    {
+      "backend": "cpu",
+      "mtp": false,
+      "repeat": 2,
+      "peak_added_phys_footprint_bytes": 1040157720,
+      "drafter_success_rate_reported_for_both_cases": null,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 34,
+          "decode_tokens_per_second": 35.011486213133196,
+          "wall_seconds": 1.269068542169407
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 256,
+          "decode_tokens_per_second": 38.179987822084236,
+          "wall_seconds": 6.98183837486431
+        }
+      ]
+    },
+    {
+      "backend": "cpu",
+      "mtp": true,
+      "repeat": 2,
+      "peak_added_phys_footprint_bytes": 1850592928,
+      "drafter_success_rate_reported_for_both_cases": 0.200364,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 33,
+          "decode_tokens_per_second": 22.98541740690884,
+          "wall_seconds": 1.728917749831453
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 258,
+          "decode_tokens_per_second": 25.466990658156142,
+          "wall_seconds": 10.393198792124167
+        }
+      ]
+    },
+    {
+      "backend": "gpu",
+      "mtp": false,
+      "repeat": 2,
+      "peak_added_phys_footprint_bytes": 658557160,
+      "drafter_success_rate_reported_for_both_cases": null,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 20,
+          "decode_tokens_per_second": 114.84913130988305,
+          "wall_seconds": 0.24415491707623005
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 256,
+          "decode_tokens_per_second": 123.95367933316311,
+          "wall_seconds": 2.1027685408480465
+        }
+      ]
+    },
+    {
+      "backend": "gpu",
+      "mtp": true,
+      "repeat": 2,
+      "peak_added_phys_footprint_bytes": 814926152,
+      "drafter_success_rate_reported_for_both_cases": 0.235529,
+      "cases": [
+        {
+          "id": "daily",
+          "prefill_token_count": 66,
+          "decode_token_count_reported": 27,
+          "decode_tokens_per_second": 93.43608589674889,
+          "wall_seconds": 0.3536561250220984
+        },
+        {
+          "id": "long_freeform",
+          "prefill_token_count": 104,
+          "decode_token_count_reported": 256,
+          "decode_tokens_per_second": 119.9558459587248,
+          "wall_seconds": 2.1723246248438954
+        }
+      ]
+    }
+  ]
+}
