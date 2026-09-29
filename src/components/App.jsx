@@ -27,7 +27,8 @@ const docs = [
   { id: 'guardrails-validation-boundaries', group: 'Guardrails', title: 'Validation Boundaries' },
   { id: 'optimization-kv-cache', group: 'Optimization', title: 'KV Cache Reuse and Persistence' },
   { id: 'optimization-context-and-latency', group: 'Optimization', title: 'Context and Latency' },
-  { id: 'optimization-evaluation-boundaries', group: 'Optimization', title: 'Evaluation Boundaries' }
+  { id: 'optimization-evaluation-boundaries', group: 'Optimization', title: 'Evaluation Boundaries' },
+  { id: 'optimization-mtp-freeform-dialogue', group: 'Optimization', title: 'Why MTP Is Not the Default for Freeform Dialogue' }
 ];
 
 const groups = ['Overview', 'Models', 'Dialogue', 'Memory', 'Tool Use', 'Guardrails', 'Optimization'];
