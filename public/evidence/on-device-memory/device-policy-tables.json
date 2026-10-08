@@ -1,0 +1,466 @@
+{
+  "status": "검토용 근거 초안",
+  "verified_on": "2026-10-08",
+  "new_device_runs": false,
+  "sources": {
+    "apple_available": {
+      "url": "https://developer.apple.com/documentation/os/os_proc_available_memory",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08",
+      "access": "공식 Markdown 본문 확인"
+    },
+    "apple_increased": {
+      "url": "https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.kernel.increased-memory-limit",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08",
+      "access": "공식 Markdown 본문 확인"
+    },
+    "apple_virtual": {
+      "url": "https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.kernel.extended-virtual-addressing",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08",
+      "access": "공식 Markdown 본문 확인"
+    },
+    "apple_debug": {
+      "url": "https://developer.apple.com/help/glossary/increased-debugging-memory-limit/",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08"
+    },
+    "apple_forum_6gb": {
+      "url": "https://developer.apple.com/forums/thread/834805",
+      "kind": "외부 직접 측정 보고",
+      "reported_date": "2026-06",
+      "verified_on": "2026-10-08",
+      "note": "Apple 답변 없음; 연결된 MLX PR은 독립 재현으로 세지 않음"
+    },
+    "mlx_pr": {
+      "url": "https://github.com/ml-explore/mlx-swift-lm/pull/343",
+      "kind": "외부 직접 측정 보고",
+      "reported_date": "2026-06-12",
+      "verified_on": "2026-10-08",
+      "independence_group": "apple_forum_6gb"
+    },
+    "coreai": {
+      "url": "https://github.com/john-rocky/coreai-model-zoo/blob/main/models/gemma4-e4b/README.md",
+      "kind": "외부 직접 측정 보고",
+      "verified_on": "2026-10-08"
+    },
+    "se3_forum": {
+      "url": "https://developer.apple.com/forums/thread/816847",
+      "kind": "외부 주장",
+      "reported_date": "2026-02",
+      "verified_on": "2026-10-08",
+      "note": "2GB 한도 주장; 첨부 오류는 저장 공간 부족이며 원본 Jetsam 보고서 없음"
+    },
+    "iphone18_release": {
+      "url": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+      "kind": "공식 발표",
+      "reported_date": "2026-09-09",
+      "verified_on": "2026-10-08",
+      "note": "존재·출시 확인용이며 메모리 한도 근거 아님"
+    },
+    "ios_historical": {
+      "url": "https://stackoverflow.com/questions/5887248/ios-app-maximum-memory-budget/15200855",
+      "kind": "측정자가 모은 과거 외부 보고",
+      "verified_on": "2026-10-08"
+    },
+    "ios_allocator": {
+      "url": "https://github.com/Split82/iOSMemoryBudgetTest/blob/master/MemoryTest/ViewController.m",
+      "kind": "원본 측정 코드",
+      "verified_on": "2026-10-08",
+      "access": "raw 원본에서 malloc(1048576), memset(..., 1048576) 확인"
+    },
+    "android_limiter": {
+      "url": "https://source.android.com/docs/core/perf/memory-limiter",
+      "kind": "공식 문서",
+      "page_updated": "2026-08-20",
+      "verified_on": "2026-10-08"
+    },
+    "android17_changes": {
+      "url": "https://developer.android.com/about/versions/17/behavior-changes-all",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08"
+    },
+    "android_pmgd": {
+      "url": "https://source.android.com/docs/core/perf/pmgd",
+      "kind": "공식 문서",
+      "page_updated": "2026-06-17",
+      "verified_on": "2026-10-08"
+    },
+    "android_budgets": {
+      "url": "https://developer.android.com/topic/performance/memory/app-memory-budgets",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08",
+      "note": "Android 17 QPR2, API 37.2; 현재 문서는 Beta 이미지로 검증하도록 안내"
+    },
+    "android_heap": {
+      "url": "https://developer.android.com/topic/performance/memory-overview",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08"
+    },
+    "android_large_heap": {
+      "url": "https://developer.android.com/guide/topics/manifest/application-element.html#largeHeap",
+      "kind": "공식 문서",
+      "verified_on": "2026-10-08"
+    },
+    "pixel7a_heap": {
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3334",
+      "kind": "외부 로그 보고",
+      "reported_date": "2026-05-05",
+      "verified_on": "2026-10-08"
+    },
+    "galaxy_m32_heap": {
+      "url": "https://github.com/Sketchware-Pro/Sketchware-Pro/issues/1811",
+      "kind": "외부 로그 보고",
+      "reported_date": "2025-08-02",
+      "verified_on": "2026-10-08",
+      "note": "본문 모델명 Galaxy M32 4G와 로그 모델 코드 SM-E225F가 일치하는지 미확인"
+    }
+  },
+  "ios_device_evidence": [
+    {
+      "device": "iPhone 17 일반형",
+      "os": "iOS 26.6.2",
+      "evidence": "기존 직접 실측으로부터 계산한 추정",
+      "ram_value": 7.492,
+      "ram_unit": "GiB",
+      "ram_method": "기기 API",
+      "budget_min_bytes": 3539992576,
+      "budget_max_bytes": 3540025344,
+      "budget_min_gib": 3.296875,
+      "budget_max_gib": 3.296905517578125,
+      "method": "phys_footprint + os_proc_available_memory; 가까운 시점 표본 연결",
+      "pairs": 11,
+      "max_pair_gap_ms": 0.21775,
+      "simultaneous": false,
+      "condition": "모델·Unity 없는 전면 카나리, 약 10초",
+      "entitlements": "기존 보고의 기본 설정; 이번 조사에서 서명 권한 파일 재검증 안 함",
+      "source_artifact": "canary-budget-estimate.json",
+      "boundary": "한도까지 할당한 종료 실험이나 별무리 제품 메모리 사용량이 아님"
+    },
+    {
+      "device": "iPhone 16 Pro Max",
+      "os": null,
+      "evidence": "외부 직접 측정 보고",
+      "ram_value": 8,
+      "ram_unit": "GB, 원문",
+      "budget_approx_value": 6144,
+      "budget_unit": "MB, 원문; 진법 미기재",
+      "method": "phys_footprint + os_proc_available_memory",
+      "entitlements": [
+        "increased-memory-limit"
+      ],
+      "source_id": "apple_forum_6gb",
+      "independence_group": "apple_forum_6gb",
+      "boundary": "기본 설정 한도 미보고, 원본 시계열 없음"
+    },
+    {
+      "device": "iPhone 17 Pro Max",
+      "os": null,
+      "evidence": "외부 직접 측정 보고",
+      "ram_value": 12,
+      "ram_unit": "GB, 원문",
+      "budget_approx_value": 6144,
+      "budget_unit": "MB, 원문; 진법 미기재",
+      "method": "phys_footprint + os_proc_available_memory",
+      "entitlements": [
+        "increased-memory-limit"
+      ],
+      "source_id": "apple_forum_6gb",
+      "independence_group": "apple_forum_6gb",
+      "boundary": "기본 설정 한도 미보고, 원본 시계열 없음"
+    },
+    {
+      "device": "iPhone 17 Pro",
+      "os": null,
+      "evidence": "외부 직접 측정 보고",
+      "ram_value": 12,
+      "ram_unit": "GB, 원문",
+      "budget_approx_value": 6.4,
+      "budget_unit": "GB, 원문; 진법 미기재",
+      "method": "보고된 footprint 2.2GB 및 headroom 4.2GB; 동시 원본 미제공",
+      "entitlements": [
+        "increased-memory-limit"
+      ],
+      "source_id": "coreai",
+      "boundary": "공식 규격이나 독립 재현으로 보지 않음"
+    },
+    {
+      "device": "iPhone SE 3",
+      "os": null,
+      "evidence": "외부 주장; 한도 미확인",
+      "ram_value": 4,
+      "ram_unit": "GB, 원문",
+      "budget_approx_value": 2,
+      "budget_unit": "GB, 원문; 진법 미기재",
+      "method": "작성자의 Jetsam 한도 주장",
+      "entitlements": null,
+      "source_id": "se3_forum",
+      "boundary": "첨부된 오류는 저장 공간 부족; 원본 Jetsam 없음"
+    },
+    {
+      "device": "iPhone 18 Pro / Pro Max",
+      "os": null,
+      "evidence": "한도 미확인",
+      "budget_approx_value": null,
+      "entitlements": null,
+      "source_id": "iphone18_release",
+      "boundary": "공식 출시 발표 존재만 확인; 앱 한도 측정 없음"
+    }
+  ],
+  "ios_historical_allocation": [
+    {
+      "device": "iPhone X",
+      "os": "iOS 11.2.1",
+      "evidence": "과거 외부 할당 실험",
+      "reported_value": 1392,
+      "reported_unit": "MB",
+      "interpreted_unit": "MiB; 도구가 1048576바이트씩 malloc+memset",
+      "allocated_before_termination_gib": 1.359375,
+      "entitlements": null,
+      "source_ids": [
+        "ios_historical",
+        "ios_allocator"
+      ],
+      "boundary": "종료 직전 할당량; 앱 풋프린트 전체나 최신 API 한도와 같지 않음"
+    },
+    {
+      "device": "iPhone XR",
+      "os": "iOS 12.1",
+      "evidence": "과거 외부 할당 실험",
+      "reported_value": 1792,
+      "reported_unit": "MB",
+      "interpreted_unit": "MiB; 도구가 1048576바이트씩 malloc+memset",
+      "allocated_before_termination_gib": 1.75,
+      "entitlements": null,
+      "source_ids": [
+        "ios_historical",
+        "ios_allocator"
+      ],
+      "boundary": "종료 직전 할당량; 앱 풋프린트 전체나 최신 API 한도와 같지 않음"
+    },
+    {
+      "device": "iPhone XS",
+      "os": "iOS 12.1",
+      "evidence": "과거 외부 할당 실험",
+      "reported_value": 2040,
+      "reported_unit": "MB",
+      "interpreted_unit": "MiB; 도구가 1048576바이트씩 malloc+memset",
+      "allocated_before_termination_gib": 1.9921875,
+      "entitlements": null,
+      "source_ids": [
+        "ios_historical",
+        "ios_allocator"
+      ],
+      "boundary": "종료 직전 할당량; 앱 풋프린트 전체나 최신 API 한도와 같지 않음"
+    },
+    {
+      "device": "iPhone XS Max",
+      "os": "iOS 12.1",
+      "evidence": "과거 외부 할당 실험",
+      "reported_value": 2039,
+      "reported_unit": "MB",
+      "interpreted_unit": "MiB; 도구가 1048576바이트씩 malloc+memset",
+      "allocated_before_termination_gib": 1.9912109375,
+      "entitlements": null,
+      "source_ids": [
+        "ios_historical",
+        "ios_allocator"
+      ],
+      "boundary": "종료 직전 할당량; 앱 풋프린트 전체나 최신 API 한도와 같지 않음"
+    },
+    {
+      "device": "iPhone 11",
+      "os": "iOS 13.1.3",
+      "evidence": "과거 외부 할당 실험",
+      "reported_value": 2068,
+      "reported_unit": "MB",
+      "interpreted_unit": "MiB; 도구가 1048576바이트씩 malloc+memset",
+      "allocated_before_termination_gib": 2.01953125,
+      "entitlements": null,
+      "source_ids": [
+        "ios_historical",
+        "ios_allocator"
+      ],
+      "boundary": "종료 직전 할당량; 앱 풋프린트 전체나 최신 API 한도와 같지 않음"
+    },
+    {
+      "device": "iPhone 11 Pro Max",
+      "os": "iOS 13.2.3",
+      "evidence": "과거 외부 할당 실험",
+      "reported_value": 2067,
+      "reported_unit": "MB",
+      "interpreted_unit": "MiB; 도구가 1048576바이트씩 malloc+memset",
+      "allocated_before_termination_gib": 2.0185546875,
+      "entitlements": null,
+      "source_ids": [
+        "ios_historical",
+        "ios_allocator"
+      ],
+      "boundary": "종료 직전 할당량; 앱 풋프린트 전체나 최신 API 한도와 같지 않음"
+    },
+    {
+      "device": "iPhone 12 Pro",
+      "os": "iOS 16.1",
+      "evidence": "과거 외부 할당 실험",
+      "reported_value": 3054,
+      "reported_unit": "MB",
+      "interpreted_unit": "MiB; 도구가 1048576바이트씩 malloc+memset",
+      "allocated_before_termination_gib": 2.982421875,
+      "entitlements": null,
+      "source_ids": [
+        "ios_historical",
+        "ios_allocator"
+      ],
+      "boundary": "종료 직전 할당량; 앱 풋프린트 전체나 최신 API 한도와 같지 않음"
+    }
+  ],
+  "ios_entitlement_comparison": [
+    {
+      "device": "iPhone 17 Pro Max",
+      "os": null,
+      "evidence": "외부 직접 측정 보고",
+      "entitlements": [
+        "increased-memory-limit"
+      ],
+      "reported_budget_mb": 6144,
+      "unit_note": "원문 MB; 진법 미기재",
+      "source_id": "apple_forum_6gb"
+    },
+    {
+      "device": "iPhone 17 Pro Max",
+      "os": null,
+      "evidence": "외부 직접 측정 보고",
+      "entitlements": [
+        "increased-memory-limit",
+        "extended-virtual-addressing"
+      ],
+      "reported_budget_mb": 6144,
+      "unit_note": "원문 MB; 진법 미기재",
+      "source_id": "apple_forum_6gb"
+    },
+    {
+      "device": "iPhone 17 Pro Max",
+      "os": null,
+      "evidence": "외부 직접 측정 보고",
+      "entitlements": [
+        "increased-memory-limit",
+        "increased-debugging-memory-limit"
+      ],
+      "reported_budget_mb": 6656,
+      "unit_note": "원문 MB; 진법 미기재",
+      "source_id": "apple_forum_6gb"
+    }
+  ],
+  "android17_standard_policy": [
+    {
+      "evidence": "공식 정책",
+      "target_ram_label": "4 GB",
+      "os": "Android 17 이상",
+      "minimum_memtotal_mib_inclusive": 3200,
+      "maximum_memtotal_mib_exclusive": 4800,
+      "visible_memory_high_mib": 2048,
+      "not_visible_memory_high_mib": 1024,
+      "visible_swap_max_mib": 1024,
+      "not_visible_swap_max_mib": 1024,
+      "metric": "cgroup v2 memory.high 및 memory.swap.max",
+      "source_id": "android_limiter",
+      "device_measured": false
+    },
+    {
+      "evidence": "공식 정책",
+      "target_ram_label": "6 GB",
+      "os": "Android 17 이상",
+      "minimum_memtotal_mib_inclusive": 4800,
+      "maximum_memtotal_mib_exclusive": 6800,
+      "visible_memory_high_mib": 4096,
+      "not_visible_memory_high_mib": 2048,
+      "visible_swap_max_mib": 2048,
+      "not_visible_swap_max_mib": 2048,
+      "metric": "cgroup v2 memory.high 및 memory.swap.max",
+      "source_id": "android_limiter",
+      "device_measured": false
+    },
+    {
+      "evidence": "공식 정책",
+      "target_ram_label": "8 GB",
+      "os": "Android 17 이상",
+      "minimum_memtotal_mib_inclusive": 6800,
+      "maximum_memtotal_mib_exclusive": 9216,
+      "visible_memory_high_mib": 5120,
+      "not_visible_memory_high_mib": 3072,
+      "visible_swap_max_mib": 3072,
+      "not_visible_swap_max_mib": 3072,
+      "metric": "cgroup v2 memory.high 및 memory.swap.max",
+      "source_id": "android_limiter",
+      "device_measured": false
+    },
+    {
+      "evidence": "공식 정책",
+      "target_ram_label": "12 GB",
+      "os": "Android 17 이상",
+      "minimum_memtotal_mib_inclusive": 9216,
+      "maximum_memtotal_mib_exclusive": 14336,
+      "visible_memory_high_mib": 8192,
+      "not_visible_memory_high_mib": 4096,
+      "visible_swap_max_mib": 4096,
+      "not_visible_swap_max_mib": 4096,
+      "metric": "cgroup v2 memory.high 및 memory.swap.max",
+      "source_id": "android_limiter",
+      "device_measured": false
+    },
+    {
+      "evidence": "공식 정책",
+      "target_ram_label": "16 GB",
+      "os": "Android 17 이상",
+      "minimum_memtotal_mib_inclusive": 14336,
+      "maximum_memtotal_mib_exclusive": 18432,
+      "visible_memory_high_mib": 10240,
+      "not_visible_memory_high_mib": 5120,
+      "visible_swap_max_mib": 5120,
+      "not_visible_swap_max_mib": 5120,
+      "metric": "cgroup v2 memory.high 및 memory.swap.max",
+      "source_id": "android_limiter",
+      "device_measured": false
+    }
+  ],
+  "android_managed_heap_reports": [
+    {
+      "device": "Pixel 7a",
+      "os": "Android 16, API 36",
+      "evidence": "외부 로그 보고",
+      "memory_class_reported_mb": 256,
+      "large_memory_class_reported_mb": 512,
+      "reported_ram": "7.82 GB, 로그",
+      "permissions": "root 없음; largeHeap 적용 여부 미기재",
+      "method": "ReVanced 앱 진단 로그; 계측 코드 재검증 안 함",
+      "source_id": "pixel7a_heap",
+      "native_pss_rss_cap": null,
+      "boundary": "Memory limit 표시는 관리 힙 값으로 분리; 해당 실패는 PNG 오류"
+    },
+    {
+      "device": "Galaxy M32 4G, 작성자 표기",
+      "os": "Android 13",
+      "evidence": "외부 로그 보고",
+      "heap_growth_limit_bytes": 536870912,
+      "heap_growth_limit_mib": 512,
+      "reported_ram": "6 GB, 작성자 표기",
+      "permissions": "미기재",
+      "method": "ART OutOfMemoryError growth limit 로그",
+      "source_id": "galaxy_m32_heap",
+      "native_pss_rss_cap": null,
+      "boundary": "본문 기기명과 로그 모델 코드의 정합성 미확인"
+    }
+  ],
+  "android_native_device_measurements": [],
+  "search_recovery": {
+    "prior_android_report": "지정된 연구 루트, 임시 연구 폴더의 첫 4단계, 프로젝트 docs, Obsidian 소마 및 전체 vault 6단계에서 미발견",
+    "meaning": "기존 대화에 없었다는 뜻이 아니며 공개표를 기억으로 복원하지 않음"
+  },
+  "unknowns": [
+    "다른 iPhone의 동일 OS·서명 권한 조건 한도",
+    "Android 기기별 native/PSS/RSS 고정 cap 직접 실측",
+    "Galaxy/Pixel 출하 이미지의 현재 Memory Limiter 활성·설정값",
+    "Android 17 QPR2 기능의 각 출시 기기 적용 상태"
+  ]
+}

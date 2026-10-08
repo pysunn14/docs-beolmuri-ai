@@ -1,0 +1,45 @@
+---
+export async function getStaticPaths() {
+  const sources = import.meta.glob('../../../content/evidence/on-device-memory/*.md', { eager: true });
+  return Object.entries(sources).map(([path, source]) => ({
+    params: { slug: path.split('/').at(-1).replace(/\.md$/, '') },
+    props: { source },
+  }));
+}
+
+const { source } = Astro.props;
+const html = await source.compiledContent();
+const title = source.frontmatter.title;
+const articleUrl = `${import.meta.env.BASE_URL}/?doc=optimization-on-device-memory`;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | 별무리 AI 문서</title>
+  </head>
+  <body>
+    <main>
+      <nav><a href={articleUrl}>On-Device Memory and Runtime Limits</a></nav>
+      <h1>{title}</h1>
+      <article set:html={html} />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  :root { color-scheme: dark; background: #0d1118; color: #e1e6ed; font-family: system-ui, sans-serif; }
+  body { margin: 0; }
+  main { max-width: 1100px; margin: auto; padding: 32px 24px 80px; line-height: 1.8; overflow-wrap: anywhere; }
+  a { color: #a5d2c4; text-underline-offset: 3px; }
+  nav { margin-bottom: 28px; }
+  h1, h2, h3 { line-height: 1.4; }
+  h2 { margin-top: 48px; border-top: 1px solid #303845; padding-top: 24px; }
+  table { display: block; overflow-x: auto; border-collapse: collapse; font-size: 13px; margin: 24px 0; }
+  th, td { padding: 10px 14px; border-bottom: 1px solid #303845; text-align: left; vertical-align: top; }
+  pre { overflow-x: auto; padding: 16px; background: #171d26; }
+  code { font-size: .9em; }
+  @media (max-width: 600px) { main { padding: 24px 16px 60px; } h1 { font-size: 26px; } }
+</style>

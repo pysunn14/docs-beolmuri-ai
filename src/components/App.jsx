@@ -25,6 +25,7 @@ const docs = [
   { id: 'tool-use-classifier-evaluation', group: 'Tool Use', title: 'Classifier Evaluation' },
   { id: 'tool-use-proposal-execution', group: 'Tool Use', title: 'Proposal and Execution' },
   { id: 'guardrails-validation-boundaries', group: 'Guardrails', title: 'Validation Boundaries' },
+  { id: 'optimization-on-device-memory', group: 'Optimization', title: 'On-Device Memory and Runtime Limits' },
   { id: 'optimization-kv-cache', group: 'Optimization', title: 'KV Cache Reuse and Persistence' },
   { id: 'optimization-context-and-latency', group: 'Optimization', title: 'Context and Latency' },
   { id: 'optimization-evaluation-boundaries', group: 'Optimization', title: 'Evaluation Boundaries' },
