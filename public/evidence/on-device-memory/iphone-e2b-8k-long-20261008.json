@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "scope": "iPhone 17 Unity application process; sampled peak per fresh run",
+  "app_build": "123470",
+  "model": "Gemma 4 E2B mobile QAT",
+  "model_file": "gemma-4-E2B-it.litertlm",
+  "runtime": "LiteRT-LM CPU",
+  "xnnpack_scale_allocation_patch": "c72e2a4",
+  "context_capacity_tokens": 8192,
+  "prefill_chunk_tokens": 128,
+  "output_cap_tokens": 256,
+  "actual_prefill_tokens": 7918,
+  "actual_decode_tokens": 49,
+  "synthetic_input_sha256": "9e31be4b6d5fa33f16b4f8875790041bd7b214cd40d3e53bc43f1707686e1b88",
+  "power_measured": false,
+  "charging": "unplugged",
+  "thermal_state": "nominal",
+  "run_count": 3,
+  "aggregation": "median of independent sampled process peaks; RSS and footprint may peak at different times",
+  "rss_peak_bytes_median": 2974646272,
+  "phys_footprint_peak_bytes_median": 1237061768,
+  "runs": [
+    {
+      "run_id": "86cc5f04-20b0-43ac-b76c-852775b89ea0",
+      "rss_peak_bytes": 2974646272,
+      "phys_footprint_peak_bytes": 1237061768,
+      "raw_artifact_count": 263,
+      "raw_artifact_index_sha256": "255f9930ba2c63f8eb07fe549a640f41088697c7571b05cf9d6d437487928098",
+      "cache_cleanup_completed": true
+    },
+    {
+      "run_id": "9720e983-a0ae-42e0-9f48-d89dfb3fdc32",
+      "rss_peak_bytes": 2936946688,
+      "phys_footprint_peak_bytes": 1237635184,
+      "raw_artifact_count": 260,
+      "raw_artifact_index_sha256": "3264070cc937c29fe66f7e75518cf67449f9736cc4a9f949eb364a45a3ca0c0f",
+      "cache_cleanup_completed": true
+    },
+    {
+      "run_id": "b7e1c4bf-f11b-47a3-bd46-5985764675eb",
+      "rss_peak_bytes": 3037626368,
+      "phys_footprint_peak_bytes": 1231523952,
+      "raw_artifact_count": 257,
+      "raw_artifact_index_sha256": "e5cf00d3d8a612791b2bb52809131d0d435a936cb0f4ce0c6545ed16675a3d28",
+      "cache_cleanup_completed": true
+    }
+  ]
+}
