@@ -15,7 +15,8 @@ export default defineConfig({
 			remarkPlugins: [remarkMath],
 			rehypePlugins: [[rehypeMermaid, {
 				strategy: 'inline-svg',
-				mermaidConfig: { theme: 'dark', fontFamily: 'Arial, sans-serif' },
+				// Mermaid 12 bundles the patched renderer; explicit defaults preserve diagram layout.
+				mermaidConfig: { theme: 'dark', layout: 'dagre', look: 'classic', fontFamily: 'Arial, sans-serif' },
 			}], rehypeKatex],
 		}),
 	},
