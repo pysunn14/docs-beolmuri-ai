@@ -1,4 +1,5 @@
 import React from 'react';
+import './document-cards.css';
 
 const TWEAK_SCHEMA = /*TWEAK-SCHEMA-BEGIN*/{
   "accentColor": { "kind": "color" },
@@ -13,10 +14,11 @@ const docs = [
   { id: 'overview', group: 'Overview', title: 'Overview' },
   { id: 'architecture', group: 'Overview', title: 'Architecture' },
   { id: 'overview-system-map', group: 'Overview', title: 'System Map' },
+  { id: 'platform-android-runtime', group: 'Platform', title: 'Android Runtime Integration' },
   { id: 'models-model-stack', group: 'Models', title: 'Model Stack' },
   { id: 'models-model-readiness', group: 'Models', title: 'Model Readiness' },
   { id: 'dialogue-response-construction', group: 'Dialogue', title: 'Response Construction' },
-  { id: 'dialogue-scene-routing', group: 'Dialogue', title: 'Scene Routing' },
+  { id: 'dialogue-scene-routing', group: 'Dialogue', title: 'Reaction Retrieval' },
   { id: 'dialogue-evaluating-consistency', group: 'Dialogue', title: 'Evaluating Consistency' },
   { id: 'memory-memory', group: 'Memory', title: 'Memory' },
   { id: 'memory-save', group: 'Memory', title: 'What gets saved' },
@@ -32,7 +34,7 @@ const docs = [
   { id: 'optimization-mtp-freeform-dialogue', group: 'Optimization', title: 'Why MTP Is Not the Default for Freeform Dialogue' }
 ];
 
-const groups = ['Overview', 'Models', 'Dialogue', 'Memory', 'Tool Use', 'Guardrails', 'Optimization'];
+const groups = ['Overview', 'Platform', 'Models', 'Dialogue', 'Memory', 'Tool Use', 'Guardrails', 'Optimization'];
 const legacyDocIds = {
   'system-map': 'overview-system-map',
   'model-stack': 'models-model-stack',
@@ -191,7 +193,7 @@ function App({ documents }) {
       <div className="workspace">
         <aside id="mobile-doc-menu" className={`left-rail ${mobileMenu ? 'is-open' : ''}`} aria-label="문서 메뉴">
           <div className="rail-inner">
-            <div className="rail-heading">문서 탐색 <span>01 — 07</span></div>
+            <div className="rail-heading">문서 탐색 <span>01 — {String(groups.length).padStart(2, '0')}</span></div>
             {groups.map((group, index) => <div className="nav-group" key={group}>
               <div className="group-label"><span className="group-index">0{index + 1}</span>{group}</div>
               <div className="nav-links">{docs.filter(item => item.group === group).map(item => <button key={item.id} onClick={() => openDoc(item.id)} className={docId === item.id ? 'active' : ''} aria-current={docId === item.id ? 'page' : undefined}>{item.title}{docId === item.id && <Chevron />}</button>)}</div>
